@@ -8,16 +8,7 @@ MiniWeather 是抓取腾讯天气API之后，制作的一款中颜值天气APP
 
 ## 效果截图
 
-<table>
-    <td>
-        <tr><img src="pic/main_top.jpg" width = "200" height = "400" float:left /></tr>
-        <tr><img src="pic/main_mid.jpg" width = "200" height = "400"  float:left  /></tr>
-        <tr><img src="pic/main_last.jpg" width = "200" height = "400"  float:left /></tr>
-        <tr><img src="pic/manage.jpg" width = "200" height = "400"  float:left /></tr>
-        <tr><img src="pic/search000.jpg" width = "200" height = "400" float:left /></tr>
-    </td>
-</table>
-
+![效果截图](pic/show.png)
 
 ## 1、腾讯天气API抓取
 
