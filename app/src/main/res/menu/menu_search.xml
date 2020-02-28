@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--https://www.jianshu.com/p/16f9e995e454-->
+    <item
+        android:id="@+id/menu_search_search"
+        app:showAsAction="always"
+        android:title="搜索"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/ic_search_black_24dp"></item>
+</menu>

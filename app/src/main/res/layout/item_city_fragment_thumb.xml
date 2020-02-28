@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="100dp"
+    app:cardCornerRadius="15dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".view.fragment.CityFragment">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="今天"
+                android:id="@+id/tv_thum_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="多云转阴"
+                android:id="@+id/tv_thum_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="10/-2℃"
+                android:id="@+id/tv_thum_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/night_cloud"
+                android:text="多云转阴"
+                android:id="@+id/iv_thum_weather_icon"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"></ImageView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

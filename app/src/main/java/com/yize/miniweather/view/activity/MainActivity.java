@@ -1,0 +1,171 @@
+package com.yize.miniweather.view.activity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+
+import com.yize.miniweather.R;
+import com.yize.miniweather.bean.CityDetailBean;
+import com.yize.miniweather.db.CityDatabaseHelper;
+import com.yize.miniweather.txweather.TxWeatherHelper;
+import com.yize.miniweather.view.adapter.CityWeatherFragmentAdapter;
+import com.yize.miniweather.view.fragment.CityFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    private Toolbar tb_main;
+    private TextView tv_notice_empty_city;
+    private LinearLayout ll_vp_point;
+    private RelativeLayout rl_main;
+    private ViewPager vp_main;
+    private CityWeatherFragmentAdapter cityWeatherFragmentAdapter;
+
+    private List<Fragment> cityFragmentList=new ArrayList<>();
+    private List<ImageView> imageViewList=new ArrayList<>();
+    private List<CityDetailBean> cityDetailBeanList=new ArrayList<>();
+
+    private CityDatabaseHelper dbHelper=new CityDatabaseHelper(this);
+
+    private static final String TAG="生命周期";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initView();
+        refreshViewPage();
+    }
+
+    private void initView(){
+        rl_main=findViewById(R.id.rl_main);
+        rl_main.setBackgroundResource(R.mipmap.background);
+        tb_main=findViewById(R.id.tb_main);
+        tv_notice_empty_city=findViewById(R.id.tv_notice_empty_city);
+        setSupportActionBar(tb_main);
+        getSupportActionBar().setTitle("");
+        tb_main.setBackgroundColor(0x40CAFF);
+        ll_vp_point=findViewById(R.id.ll_vp_point);
+        vp_main=findViewById(R.id.vp_main);
+        buildVpPoint();
+        cityWeatherFragmentAdapter=new CityWeatherFragmentAdapter(getSupportFragmentManager(),cityFragmentList);
+        vp_main.setAdapter(cityWeatherFragmentAdapter);
+        vp_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+            @Override
+            public void onPageSelected(int position) {
+                for(ImageView iv:imageViewList){
+                    iv.setImageResource(R.drawable.shape_point_green);
+                }
+                imageViewList.get(position).setImageResource(R.drawable.shape_point_pink);
+                getSupportActionBar().setTitle(cityDetailBeanList.get(position).getCurrentName());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void refreshViewPage(){
+        dbHelper.open();
+        List<CityDetailBean> cityDetailBeans=dbHelper.getAllCity();
+        cityDetailBeanList.clear();
+        cityDetailBeanList.addAll(cityDetailBeans);
+        dbHelper.close();
+        buildFragments();
+        buildVpPoint();
+        cityWeatherFragmentAdapter.notifyDataSetChanged();
+        if(cityFragmentList.size()>0){
+            vp_main.setCurrentItem(cityFragmentList.size()-1);
+            getSupportActionBar().setTitle(cityDetailBeanList.get(cityDetailBeanList.size()-1).getCurrentName());
+        }
+        if(cityFragmentList.isEmpty()){
+            tv_notice_empty_city.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("Mini天气");
+        }else {
+            tv_notice_empty_city.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    private void buildFragments(){
+        cityFragmentList.clear();
+        for (CityDetailBean bean:cityDetailBeanList){
+            CityFragment weatherFragment=new CityFragment();
+            Bundle bundle=new Bundle();
+            String updateLink= TxWeatherHelper.txWeatherURLBuilder(bean);
+            bundle.putString("updateLink",updateLink);
+            bundle.putSerializable("cityDetailBean",bean);
+            weatherFragment.setArguments(bundle);
+            cityFragmentList.add(weatherFragment);
+        }
+    }
+
+
+    private void buildVpPoint(){
+        imageViewList.clear();
+        ll_vp_point.removeAllViews();
+        //        创建小圆点 ViewPager页面指示器的函数
+        for (int i = 0; i < cityFragmentList.size(); i++) {
+            ImageView iv_point = new ImageView(this);
+            iv_point.setImageResource(R.drawable.shape_point_pink);
+            iv_point.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) iv_point.getLayoutParams();
+            lp.setMargins(0,0,20,0);
+            imageViewList.add(iv_point);
+            ll_vp_point.addView(iv_point);
+        }
+        if(cityFragmentList.size()>0){
+            imageViewList.get(imageViewList.size()-1).setImageResource(R.drawable.shape_point_green);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.i(TAG, "onOptionsItemSelected()");
+        switch (item.getItemId()){
+            case R.id.item_main_manage:
+                Log.i(TAG, "menu_city_manage_add");
+                Intent intent=new Intent(MainActivity.this,CityManageAcitivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshViewPage();
+    }
+}

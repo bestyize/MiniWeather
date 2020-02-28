@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:minWidth="80dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_day_week"
+        android:text="周一"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_day_day"
+        android:text="02/25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_day_state"
+        android:text="晴转多云"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/night_cloud"
+        android:id="@+id/iv_day_icon"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"></ImageView>
+    <TextView
+        android:textColor="@color/color_soft_red"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_day_max_temp"
+        android:text="11℃"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:textColor="@color/color_soft_green"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_day_min_temp"
+        android:text="-2℃"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_day_wind_desc"
+        android:text="东风"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_day_wind_power"
+        android:text="4级"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+
+</LinearLayout>

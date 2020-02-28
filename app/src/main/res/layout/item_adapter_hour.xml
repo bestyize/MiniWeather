@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:minWidth="80dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="18:02"
+        android:id="@+id/tv_weather_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+<!--    http://mat1.gtimg.com/pingjs/ext2020/weather/mobile2.0/assets/weather/night/01.svg-->
+    <ImageView
+        android:src="@mipmap/night_cloud"
+        android:id="@+id/iv_weather_hour_icon"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"></ImageView>
+    <TextView
+        android:id="@+id/tv_weather_hour_temp"
+        android:text="5℃"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+
+</LinearLayout>

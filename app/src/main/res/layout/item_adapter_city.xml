@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    android:padding="10dp"
+    android:layout_margin="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:minHeight="80dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:text="北京"
+            android:id="@+id/tv_city_manage_city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:layout_toLeftOf="@+id/tv_city_manage_weather_desc"
+            android:id="@+id/tv_city_manage_temp"
+            android:text="9℃/1℃"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:layout_toLeftOf="@+id/iv_remove_city"
+            android:id="@+id/tv_city_manage_weather_desc"
+            android:text="晴天"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:id="@+id/iv_remove_city"
+            android:src="@drawable/ic_remove_black_50dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"></ImageView>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

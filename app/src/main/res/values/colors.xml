@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#00a0e9</color>
+    <color name="colorAccent">#FF6377</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorButtonPink">#FF6377</color>
+    <color name="colorButtonGold">#dfb665</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="color_weixin_background_gray">#ededed</color>
+    <color name="color_soft_red">#FF6377</color>
+    <color name="color_soft_green">#00DBAA</color>
+    <color name="color_soft_blue">#0FCEDD</color>
+    <color name="color_soft_yellow">#FFE380</color>
+    <color name="color_light_blue">#D6F4FF</color>
+    <color name="color_purple">#6200EE</color>
+    <color name="color_soft_purple">#926AFE</color>
+    <color name="color_soft_pink">#FF73A9</color>
+    <color name="color_theme">#FF6377</color>
+    <color name="weixin_green">#00c800</color>
+    <color name="color_very_light_blue">#e4f0f4</color>
+    <color name="color_deep_blue">#00a0e9</color>
+    <color name="color_cover_gray">#66000000</color>
+</resources>
