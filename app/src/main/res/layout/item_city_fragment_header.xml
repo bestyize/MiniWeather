@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"></TextView>
         <ImageView
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
             android:id="@+id/iv_header_more"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ImageView>

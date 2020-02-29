@@ -1,6 +1,7 @@
 package com.yize.miniweather.view.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -10,9 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -179,11 +182,36 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,CityManageAcitivity.class);
                 startActivity(intent);
                 break;
+            case R.id.item_main_opensource:
+                noticeOpensource();
+                break;
             default:
                 break;
         }
         return true;
     }
+
+    public void noticeOpensource(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("温馨提示");
+        builder.setMessage("Mini天气是一个开源软件，地址：\n" +
+                "https://github.com/bestyize/MiniWeather\n" +
+                "点击确定访问开源地址");
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            Intent intent=new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri uri=Uri.parse("https://github.com/bestyize/MiniWeather");
+            intent.setData(uri);
+            startActivity(intent);
+        });
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
+
+    }
+
+
 
     @Override
     protected void onResume() {

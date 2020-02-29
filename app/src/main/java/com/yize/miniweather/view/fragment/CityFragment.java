@@ -211,6 +211,8 @@ public class CityFragment extends Fragment {
                 tv_more_air_quality.setText("空气质量："+air.getAqiName());
                 Log.i("空气：",air.toString());
 
+                ll_header_show_more.setVisibility(View.VISIBLE);
+
                 //更新本地数据库
                 dbHelper.open();
                 dbHelper.updateCity(cityDetailBean);

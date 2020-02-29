@@ -19,7 +19,7 @@
     <TextView
         style="@style/headerTextStyle"
         android:textSize="25sp"
-        android:text="暂时没有添加城市\n请点击右上角添加"
+        android:text="暂时没有添加城市\n请点击右上角 + 号添加"
         android:id="@+id/tv_notice_empty_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></TextView>
