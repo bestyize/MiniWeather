@@ -2,8 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yize.miniweather">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Android Q新增权限，允许应用在后台发起定位，如应用target为Q，请添加此权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!--如果设置了target >= 28 如果需要启动后台定位则必须声明这个权限-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- 通过GPS得到精确位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 通过网络得到粗略位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 访问网络，某些位置信息需要从网络服务器获取 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 访问WiFi状态，需要WiFi信息用于网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 访问网络状态, 检测网络的可用性，需要网络运营商相关信息用于网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- 访问手机当前状态, 需要某些信息用于网络定位 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
+        <meta-data android:name="TencentMapSDK" android:value="OLUBZ-AEM6Q-LWY5W-G25EL-FX76K-65BZ4"></meta-data>
         <activity android:name=".view.activity.SearchCityActivity"></activity>
         <activity android:name=".view.activity.CityManageAcitivity" />
         <activity android:name=".view.activity.MainActivity">
@@ -22,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

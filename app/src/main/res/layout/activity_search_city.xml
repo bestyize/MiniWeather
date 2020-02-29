@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
     </androidx.appcompat.widget.Toolbar>
+    <TextView
+        android:visibility="gone"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:text="当前位置：山东省 临沂市 兰陵县"
+        android:id="@+id/tv_current_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
 
     <GridView
         android:layout_below="@+id/tb_search"

@@ -18,12 +18,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yize.miniweather.R;
 import com.yize.miniweather.bean.CityShip;
 import com.yize.miniweather.bean.WeatherBean;
+import com.yize.miniweather.txweather.TxCityLocationListener;
 import com.yize.miniweather.txweather.TxCityRequestListener;
+import com.yize.miniweather.txweather.TxLocationHelper;
 import com.yize.miniweather.txweather.TxWeatherHelper;
 import com.yize.miniweather.txweather.TxWeatherRequestListener;
 import com.yize.miniweather.util.AsyncHttpRequestListener;
@@ -40,6 +43,10 @@ import static com.yize.miniweather.util.DefaultParams.OPCODE_NONE;
 
 public class SearchCityActivity extends AppCompatActivity {
     private static final String TAG="搜索结果";
+
+    private TextView tv_current_position;
+    private CityShip currentCityShip;
+
     private String[]hotCitys = {"北京","上海","广州","深圳","珠海","佛山","南京","苏州","厦门","长沙","成都","福州",
             "杭州","武汉","青岛","西安","太原","沈阳","重庆","天津","南宁"};
     private GridView gv_host_city;
@@ -55,12 +62,20 @@ public class SearchCityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_city);
         viewInit();
+        refreshView();
     }
     private void viewInit(){
         Toolbar tb_search=findViewById(R.id.tb_search);
         setSupportActionBar(tb_search);
         getSupportActionBar().setTitle("");
 
+        tv_current_position=findViewById(R.id.tv_current_position);
+        tv_current_position.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TxWeatherHelper.requestCity(currentCityShip,listener);
+            }
+        });
 
         gv_host_city=findViewById(R.id.gv_host_city);
         adapter=new ArrayAdapter<>(this,R.layout.item_city,hotCitys);
@@ -87,7 +102,7 @@ public class SearchCityActivity extends AppCompatActivity {
             gv_host_city.setVisibility(View.VISIBLE);
             rv_search_result.setVisibility(View.GONE);
         }
-
+        TxLocationHelper.getCurrentLocation(SearchCityActivity.this,txCityLocationListener);
     }
 
     @Override
@@ -124,6 +139,7 @@ public class SearchCityActivity extends AppCompatActivity {
         public void onSuccess(List<CityShip> cityShips) {
             cityShipList.clear();
             cityShipList.addAll(cityShips);
+            tv_current_position.setVisibility(View.VISIBLE);
             refreshView();
 
         }
@@ -132,6 +148,7 @@ public class SearchCityActivity extends AppCompatActivity {
         public void onFailed(String reason) {
             gv_host_city.setVisibility(View.VISIBLE);//请求失败，还显示热门城市
             Toast.makeText(SearchCityActivity.this,reason,Toast.LENGTH_SHORT).show();
+            tv_current_position.setVisibility(View.GONE);
         }
     };
 
@@ -168,6 +185,21 @@ public class SearchCityActivity extends AppCompatActivity {
         public void onFailed(String reason) {
             Toast.makeText(SearchCityActivity.this,"请求失败："+reason,Toast.LENGTH_SHORT).show();
             Log.i(TAG,reason);
+        }
+    };
+
+    private TxCityLocationListener txCityLocationListener=new TxCityLocationListener() {
+        @Override
+        public void onSuccess(CityShip cityShip) {
+            tv_current_position.setVisibility(View.VISIBLE);
+            tv_current_position.setText("当前位置："+cityShip.getProvince()+"/"+cityShip.getCity()+"/"+cityShip.getCountry());
+            currentCityShip=cityShip;
+            Log.i("定位结果",cityShip.toString());
+        }
+
+        @Override
+        public void onFailed(String reason) {
+            Log.i("定位","定位失败");
         }
     };
 

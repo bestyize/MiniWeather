@@ -173,7 +173,4 @@ public class TxWeatherHelper {
             return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/night/"+weatherCode+".png";
         }
     }
-
-
-
 }

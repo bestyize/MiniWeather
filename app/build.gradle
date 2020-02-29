@@ -46,5 +46,10 @@ dependencies {
     implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
     implementation 'com.google.android.material:material:1.0.0'
 
+    // https://mvnrepository.com/artifact/com.tencent.map.geolocation/TencentLocationSdk-openplatform
+    //腾讯地图定位
+    compile group: 'com.tencent.map.geolocation', name: 'TencentLocationSdk-openplatform', version: '7.2.5'
+
+
 
 }
