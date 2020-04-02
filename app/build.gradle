@@ -48,7 +48,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.tencent.map.geolocation/TencentLocationSdk-openplatform
     //腾讯地图定位
-    compile group: 'com.tencent.map.geolocation', name: 'TencentLocationSdk-openplatform', version: '7.2.5'
+    implementation group: 'com.tencent.map.geolocation', name: 'TencentLocationSdk-openplatform', version: '7.2.5'
 
 
 

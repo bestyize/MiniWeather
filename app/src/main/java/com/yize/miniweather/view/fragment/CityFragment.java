@@ -188,8 +188,8 @@ public class CityFragment extends Fragment {
                 tv_thum_desc.setText(forecastDayList.get(1).getDayWeather());
                 tv_thum_temp.setText(forecastDayList.get(1).getMaxDegree()+"℃/"+forecastDayList.get(1).getMinDegree()+"℃");
                 String baseIconUrl=TxWeatherHelper.getWeatherStateIcon(forecastDayList.get(1).getDayWeatherCode(),true);
-                if(CityFragment.this!=null){
-                    Glide.with(CityFragment.this).load(baseIconUrl).override(50).into(iv_thum_weather_icon);
+                if(getContext()!=null){//防止fragment销毁后Glide仍然加载图片
+                    Glide.with(getContext()).load(baseIconUrl).override(50).into(iv_thum_weather_icon);
                 }
                 Log.i("Fragment更新","今日天气");
 
