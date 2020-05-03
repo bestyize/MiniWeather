@@ -26,6 +26,7 @@ import com.yize.miniweather.txweather.TxWeatherHelper;
 import com.yize.miniweather.util.AsyncHttpRequestListener;
 import com.yize.miniweather.util.DateHelper;
 import com.yize.miniweather.util.HttpAsyncTaskHelper;
+import com.yize.miniweather.util.HttpLiteBusHelper;
 import com.yize.miniweather.view.adapter.DayAdapter;
 import com.yize.miniweather.view.adapter.HourAdapter;
 import com.yize.miniweather.view.adapter.IndexAdapter;
@@ -141,7 +142,7 @@ public class CityFragment extends Fragment {
         //更新城市信息的链接，应该直接传过来
         String updateLink=bundle.getString("updateLink");
         CityDetailBean cityDetailBean=(CityDetailBean)bundle.getSerializable("cityDetailBean");
-        HttpAsyncTaskHelper helper=new HttpAsyncTaskHelper(new AsyncHttpRequestListener() {
+        HttpLiteBusHelper helper=new HttpLiteBusHelper(new AsyncHttpRequestListener() {
             @Override
             public void onSuccess(String result) {
                 //解析JSON 更新UI
@@ -229,7 +230,7 @@ public class CityFragment extends Fragment {
                 }
             }
         });
-        helper.execute(updateLink);
+        helper.doAsyncRequest(updateLink);
 
     }
 }
