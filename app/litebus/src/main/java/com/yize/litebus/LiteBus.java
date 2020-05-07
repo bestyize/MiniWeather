@@ -23,22 +23,28 @@ public class LiteBus {
                 }
             }
         }
+
         return DEFAULT_INSTANCE;
     }
     public LiteBus(){
         METHOD_CACHE=new ConcurrentHashMap<Class<?>, List<SubscriberMethod>>();
         subscriptionBus=new ConcurrentHashMap<Class<?>, List<Subscription>>();
+        SUBSCRIPTION_CACHE=new ConcurrentHashMap<Class<?>, List<Subscription>>();
         dataTypeList=new CopyOnWriteArrayList<>();
         mainPublisher=new MainPublisher();
     }
     //订阅者的方法缓存，key为订阅者类
-    private Map<Class<?>, List<SubscriberMethod>> METHOD_CACHE;
+    private volatile Map<Class<?>, List<SubscriberMethod>> METHOD_CACHE;
+
 
     //订阅总线，key为数据类型，value是订阅者的订阅。在消息发布的时候根据消息类型进行派发
-    private Map<Class<?>,List<Subscription>> subscriptionBus;
+    private volatile Map<Class<?>,List<Subscription>> subscriptionBus;
+    //订阅者的订阅缓存，key是订阅者类
+    private volatile Map<Class<?>,List<Subscription>> SUBSCRIPTION_CACHE;
+    //消息列表
+    private volatile List<Class<?>> dataTypeList;
 
-    private List<Class<?>> dataTypeList;
-
+    //主发布器
     private Publisher mainPublisher;
 
 
@@ -51,8 +57,9 @@ public class LiteBus {
         List<SubscriberMethod> subscriberMethodList=findSubscribeMethods(subscriberClass);
         synchronized (this){
             for (SubscriberMethod subscriberMethod:subscriberMethodList){
-                subscribe(subscriber,subscriberMethod);
+                subscribeByDataType(subscriber,subscriberMethod);
             }
+
         }
 
     }
@@ -88,7 +95,7 @@ public class LiteBus {
      * @param subscriber
      * @param subscriberMethod
      */
-    private void subscribe(Object subscriber,SubscriberMethod subscriberMethod){
+    private void subscribeByDataType(Object subscriber, SubscriberMethod subscriberMethod){
         Subscription subscription=new Subscription(subscriber,subscriberMethod);
         Class<?> dataType=subscriberMethod.dataType;
         List<Subscription> subscriptionList=subscriptionBus.get(dataType);
@@ -96,6 +103,12 @@ public class LiteBus {
             subscriptionList=new CopyOnWriteArrayList<Subscription>();
             subscriptionBus.put(dataType,subscriptionList);
         }
+
+        List<Subscription> cachedSubscriptionList=SUBSCRIPTION_CACHE.get(subscriber.getClass());
+        if(cachedSubscriptionList==null){
+            cachedSubscriptionList=new LinkedList<>();
+        }
+        cachedSubscriptionList.add(subscription);
         subscriptionList.add(subscription);
     }
 
@@ -140,7 +153,7 @@ public class LiteBus {
      * @param data
      * @param isMainThread
      */
-    public void publishToSubscriber(Subscription subscription,Object data,boolean isMainThread){
+    public void publishToSubscriber(Subscription subscription, Object data, boolean isMainThread){
         WorkMode workMode=subscription.subscriberMethod.workMode;
         switch (workMode){
             case THREAD_MAIN:
@@ -164,7 +177,7 @@ public class LiteBus {
      * @param subscription
      * @param data
      */
-    private void invoke(Subscription subscription,Object data){
+    private void invoke(Subscription subscription, Object data){
         try {
             subscription.subscriberMethod.method.invoke(subscription.subscriber,data);
         } catch (IllegalAccessException e) {
@@ -195,29 +208,44 @@ public class LiteBus {
      * @param subscriber
      */
     public void unregister(Object subscriber){
-        Class<?> subscriberClass=subscriber.getClass();
-        List<SubscriberMethod> subscriberMethods=METHOD_CACHE.get(subscriberClass);
-        if(subscriberMethods.size()==0){
-            Log.i(TAG,"unregister failed ,there is no subscriber");
-            return;
+        subscripitionManager.enqueue(new CleanUpWoker(subscriber));
+    }
+
+    class CleanUpWoker implements Runnable{
+
+        private final Object subscriber;
+
+        CleanUpWoker(Object subscriber) {
+            this.subscriber = subscriber;
         }
-        METHOD_CACHE.remove(subscriberClass);
-        synchronized (this){
-            for (Class<?> dataType:dataTypeList){
-                List<Subscription> subscriptionList=subscriptionBus.get(dataType);
-                if(subscriptionList!=null&&subscriptionList.size()>0){
-                    int curr=0;
-                    while (curr<subscriptionList.size()){
-                        if(subscriptionList.get(curr).subscriber==subscriber){
-                            subscriptionList.remove(curr);
-                        }else {
-                            curr++;
+
+        @Override
+        public void run() {
+            Class<?> subscriberClass=subscriber.getClass();
+            List<SubscriberMethod> subscriberMethods=METHOD_CACHE.get(subscriberClass);
+            if(subscriberMethods==null||subscriberMethods.size()==0){
+                Log.i(TAG,"unregister failed ,there is no subscriber");
+                return;
+            }
+            METHOD_CACHE.remove(subscriberClass);
+            synchronized (this){
+                for (Class<?> dataType:dataTypeList){
+                    List<Subscription> subscriptionList=subscriptionBus.get(dataType);
+                    if(subscriptionList!=null&&subscriptionList.size()>0){
+                        int curr=0;
+                        while (curr<subscriptionList.size()){
+                            if(subscriptionList.get(curr).subscriber==subscriber){
+                                subscriptionList.remove(curr).isAlive=false;
+                            }else {
+                                curr++;
+                            }
                         }
                     }
                 }
             }
         }
-
     }
+
+    private final SubscripitionManager subscripitionManager=new SubscripitionManager();
 
 }

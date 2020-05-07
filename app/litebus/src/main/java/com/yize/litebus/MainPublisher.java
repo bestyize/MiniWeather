@@ -47,7 +47,11 @@ public class MainPublisher extends Handler implements Publisher {
             case MAIN_DATA:
                 InnerPublishData publishData=(InnerPublishData) msg.obj;
                 try {
-                    publishData.subscription.subscriberMethod.method.invoke(publishData.subscription.subscriber,publishData.data);
+                    Subscription subscription=publishData.subscription;
+                    if(subscription!=null&&subscription.isAlive){
+                        publishData.subscription.subscriberMethod.method.invoke(subscription.subscriber,publishData.data);
+                    }
+
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {

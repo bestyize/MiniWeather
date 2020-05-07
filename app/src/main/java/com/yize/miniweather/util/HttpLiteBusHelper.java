@@ -39,7 +39,6 @@ public class HttpLiteBusHelper {
         }else {
             listener.onSuccess(response.response);
         }
-        //LiteBus.defaultBus().unregister(this);
     }
 
     class LiteBusWebResponse{
