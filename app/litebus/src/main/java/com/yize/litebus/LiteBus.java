@@ -1,5 +1,6 @@
 package com.yize.litebus;
 
+import android.app.Activity;
 import android.os.Looper;
 import android.util.Log;
 
@@ -247,5 +248,13 @@ public class LiteBus {
     }
 
     private final SubscripitionManager subscripitionManager=new SubscripitionManager();
+
+    public void test(){
+        Activity activity=new Activity();
+        AutoBus.getAutoLifeBus(activity).load("123");
+    }
+
+
+
 
 }
