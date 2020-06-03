@@ -1,8 +1,10 @@
 package com.yize.miniweather.util;
 
-import com.yize.litebus.LiteBus;
-import com.yize.litebus.Subscribe;
-import com.yize.litebus.WorkMode;
+
+
+import com.yize.autobus.LiteBus;
+import com.yize.autobus.Subscribe;
+import com.yize.autobus.WorkMode;
 
 import java.io.IOException;
 
