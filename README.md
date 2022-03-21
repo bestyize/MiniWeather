@@ -96,18 +96,35 @@ GET请求后面的weather_type内容参数之间用 | 分割，然后再进行UR
 
 判断白天黑夜的方法也很简单，抓取时间转为小时，白天时间为06:00-18:00
 
-下面是使用方法
+下面是使用方法 (获取到的图片尺寸为 60x60像素)：
 
 ```java
-    public static String getWeatherStateIcon(String weatherCode,boolean day){
-        if(day){
-            return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/day/"+weatherCode+".png";
-        }else {
-            return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/night/"+weatherCode+".png";
-        }
+public static String getWeatherStateIcon(String weatherCode,boolean day){
+    if(day){
+        return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/day/"+weatherCode+".png";
+    }else {
+        return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/night/"+weatherCode+".png";
     }
-
+}
 ```
+
+<br>
+
+若想获取较大的图标 (134x134像素)，则使用下面的地址：
+
+```java
+public static String getWeatherStateIcon(String weatherCode,boolean day){
+    if(day){
+        return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/currentweather/day/"+weatherCode+".png";
+    }else {
+        return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/currentweather/night/"+weatherCode+".png";
+    }
+}
+```
+
+
+
+<br>
 
 ## 腾讯天气数据示例
 
