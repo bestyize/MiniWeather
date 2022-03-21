@@ -112,7 +112,7 @@ public static String getWeatherStateIcon(String weatherCode,boolean day){
 
 若想获取较大的图标 (134x134像素)，则使用下面的地址：
 
-```
+```java
 public static String getWeatherStateIcon(String weatherCode,boolean day){
     if(day){
         return "http://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/currentweather/day/"+weatherCode+".png";
