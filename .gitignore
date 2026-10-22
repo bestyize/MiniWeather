@@ -1,0 +1,15 @@
+# Local build output and IDE state
+.gradle/
+build/
+*/build/
+.idea/
+*.iml
+local.properties
+.DS_Store
+*.log
+*.hprof
+
+# Signing material must never be committed
+*.jks
+*.keystore
+key.properties
