@@ -16,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -247,14 +246,5 @@ public class SearchCityActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            Intent intent=new Intent(SearchCityActivity.this,CityManageAcitivity.class);
-            intent.putExtra("opcode",OPCODE_NONE);
-            setResult(RESULT_OK,intent);
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }
+

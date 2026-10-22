@@ -9,9 +9,9 @@ android {
     defaultConfig {
         applicationId = "com.yize.miniweather"
         minSdk = 23
-        // Keep existing behavior while the location/permission flow is modernized.
-        // Google Play submission requires targetSdk >= 36 in 2026.
-        targetSdk = 29
+        // Required for Google Play app updates since August 2026.
+        // Android 17 (API 37) runtime behavior is covered by compatibility testing.
+        targetSdk = 36
         versionCode = 1
         versionName = "1.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

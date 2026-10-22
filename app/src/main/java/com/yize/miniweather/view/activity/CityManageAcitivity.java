@@ -82,7 +82,7 @@ public class CityManageAcitivity extends AppCompatActivity {
             Intent intent = new Intent(CityManageAcitivity.this, SearchCityActivity.class);
             startActivityForResult(intent, 0);
         } else if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            finish();
         }
         return true;
     }
@@ -125,9 +125,4 @@ public class CityManageAcitivity extends AppCompatActivity {
         return city;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 }
