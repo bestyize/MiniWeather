@@ -2,7 +2,7 @@ name: Android build
 
 on:
   push:
-    branches: [master, "chore/android-build-2026"]
+    branches: [master]
   pull_request:
     branches: [master]
   workflow_dispatch:
@@ -26,8 +26,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.event_name == 'pull_request' }}
-      - name: Assemble and run unit tests
-        run: ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest
+      - name: Assemble, test and lint
+        run: ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
       - uses: actions/upload-artifact@v4
         if: success()
         with:

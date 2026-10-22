@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.yize.miniweather.R;
+import com.yize.miniweather.util.EdgeToEdgeHelper;
 import com.yize.miniweather.bean.CityDetailBean;
 import com.yize.miniweather.bean.CityShip;
 import com.yize.miniweather.bean.WeatherBean;
@@ -38,6 +39,7 @@ public class CityManageAcitivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_manage_acitivity);
+        EdgeToEdgeHelper.install(this, R.id.root_city_manage, true);
         initView();
         refreshView();
     }
@@ -80,7 +82,7 @@ public class CityManageAcitivity extends AppCompatActivity {
             Intent intent = new Intent(CityManageAcitivity.this, SearchCityActivity.class);
             startActivityForResult(intent, 0);
         } else if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            finish();
         }
         return true;
     }
@@ -88,11 +90,17 @@ public class CityManageAcitivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != 0 || resultCode != RESULT_OK || data == null) {
+            return;
+        }
         int opcode=data.getIntExtra("opcode",OPCODE_NONE);
         Log.i(TAG,String.valueOf(opcode));
         if(opcode==OPCODE_ADD){
             CityShip cityShip=(CityShip)data.getSerializableExtra("cityShip");
             WeatherBean weatherBean=(WeatherBean)data.getSerializableExtra("weatherBean");
+            if (cityShip == null || weatherBean == null || weatherBean.getData() == null) {
+                return;
+            }
             helper.open();
             CityDetailBean city=buildCityDetailBean(cityShip,weatherBean);
             Log.i(TAG,city.toString());
@@ -117,9 +125,4 @@ public class CityManageAcitivity extends AppCompatActivity {
         return city;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 }

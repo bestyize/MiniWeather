@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_collapseMode="pin"
-        android:fitsSystemWindows="true" />
+        />
     <TextView
         style="@style/headerTextStyle"
         android:textSize="25sp"

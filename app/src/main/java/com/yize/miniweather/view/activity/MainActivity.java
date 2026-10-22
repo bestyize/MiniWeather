@@ -4,16 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +27,7 @@ import android.widget.Toast;
 import com.tencent.map.geolocation.TencentLocation;
 import com.tencent.map.geolocation.TencentLocationListener;
 import com.yize.miniweather.R;
+import com.yize.miniweather.util.EdgeToEdgeHelper;
 import com.yize.miniweather.bean.CityDetailBean;
 import com.yize.miniweather.db.CityDatabaseHelper;
 import com.yize.miniweather.txweather.TxLocationHelper;
@@ -41,16 +38,6 @@ import com.yize.miniweather.view.fragment.CityFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.ACCESS_NETWORK_STATE;
-import static android.Manifest.permission.ACCESS_WIFI_STATE;
-import static android.Manifest.permission.CHANGE_NETWORK_STATE;
-import static android.Manifest.permission.CHANGE_WIFI_STATE;
-import static android.Manifest.permission.FOREGROUND_SERVICE;
-import static android.Manifest.permission.INTERNET;
-import static android.Manifest.permission.READ_PHONE_STATE;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar tb_main;
@@ -72,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EdgeToEdgeHelper.install(this, R.id.rl_main, false);
         initView();
-        checkPermission();
 
         refreshViewPage();
     }
@@ -214,30 +201,5 @@ public class MainActivity extends AppCompatActivity {
         refreshViewPage();
     }
 
-
-    private void checkPermission(){
-        ArrayList<String> noPermissList=new ArrayList<>();
-        List<String> permissions=new ArrayList<>();
-        permissions.add(ACCESS_FINE_LOCATION);
-        permissions.add(FOREGROUND_SERVICE);
-        permissions.add(ACCESS_BACKGROUND_LOCATION);
-        permissions.add(ACCESS_COARSE_LOCATION);
-        permissions.add(INTERNET);
-        permissions.add(ACCESS_WIFI_STATE);
-
-        permissions.add(CHANGE_WIFI_STATE);
-        permissions.add(ACCESS_NETWORK_STATE);
-        permissions.add(CHANGE_NETWORK_STATE);
-        permissions.add(READ_PHONE_STATE);
-        for(String permiss:permissions){
-            if(ContextCompat.checkSelfPermission(this,permiss)!= PackageManager.PERMISSION_GRANTED){
-                noPermissList.add(permiss);
-            }
-        }
-
-        if(noPermissList.size()>0){
-            ActivityCompat.requestPermissions(this,noPermissList.toArray(new String[noPermissList.size()]),0);
-        }
-    }
 
 }
