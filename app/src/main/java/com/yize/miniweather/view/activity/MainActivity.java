@@ -177,17 +177,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Log.i(TAG, "onOptionsItemSelected()");
-        switch (item.getItemId()){
-            case R.id.item_main_manage:
-                Log.i(TAG, "menu_city_manage_add");
-                Intent intent=new Intent(MainActivity.this,CityManageAcitivity.class);
-                startActivity(intent);
-                break;
-            case R.id.item_main_opensource:
-                noticeOpensource();
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.item_main_manage) {
+            Intent intent = new Intent(MainActivity.this, CityManageAcitivity.class);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.item_main_opensource) {
+            noticeOpensource();
         }
         return true;
     }
