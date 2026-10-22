@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yize.miniweather">
+>
 
     <!-- Android Q新增权限，允许应用在后台发起定位，如应用target为Q，请添加此权限 -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -34,7 +34,7 @@
         <meta-data android:name="TencentMapSDK" android:value="OLUBZ-AEM6Q-LWY5W-G25EL-FX76K-65BZ4"></meta-data>
         <activity android:name=".view.activity.SearchCityActivity"></activity>
         <activity android:name=".view.activity.CityManageAcitivity" />
-        <activity android:name=".view.activity.MainActivity">
+        <activity android:name=".view.activity.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

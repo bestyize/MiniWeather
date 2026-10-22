@@ -76,16 +76,11 @@ public class CityManageAcitivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_city_manage_add:
-                Intent intent=new Intent(CityManageAcitivity.this,SearchCityActivity.class);
-                startActivityForResult(intent,0);
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.menu_city_manage_add) {
+            Intent intent = new Intent(CityManageAcitivity.this, SearchCityActivity.class);
+            startActivityForResult(intent, 0);
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return true;
     }
