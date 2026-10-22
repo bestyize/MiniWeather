@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.yize.miniweather.R;
+import com.yize.miniweather.util.EdgeToEdgeHelper;
 import com.yize.miniweather.bean.CityDetailBean;
 import com.yize.miniweather.bean.CityShip;
 import com.yize.miniweather.bean.WeatherBean;
@@ -38,6 +39,7 @@ public class CityManageAcitivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_manage_acitivity);
+        EdgeToEdgeHelper.install(this, R.id.root_city_manage, true);
         initView();
         refreshView();
     }

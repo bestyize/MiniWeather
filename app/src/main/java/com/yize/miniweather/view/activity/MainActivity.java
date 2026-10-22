@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.tencent.map.geolocation.TencentLocation;
 import com.tencent.map.geolocation.TencentLocationListener;
 import com.yize.miniweather.R;
+import com.yize.miniweather.util.EdgeToEdgeHelper;
 import com.yize.miniweather.bean.CityDetailBean;
 import com.yize.miniweather.db.CityDatabaseHelper;
 import com.yize.miniweather.txweather.TxLocationHelper;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EdgeToEdgeHelper.install(this, R.id.rl_main, false);
         initView();
 
         refreshViewPage();

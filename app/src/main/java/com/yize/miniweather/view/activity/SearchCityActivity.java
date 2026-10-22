@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yize.miniweather.R;
+import com.yize.miniweather.util.EdgeToEdgeHelper;
 import com.yize.miniweather.bean.CityShip;
 import com.yize.miniweather.bean.WeatherBean;
 import com.yize.miniweather.txweather.TxCityLocationListener;
@@ -98,6 +99,7 @@ public class SearchCityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_city);
+        EdgeToEdgeHelper.install(this, R.id.root_search_city, true);
         viewInit();
         refreshView();
     }
