@@ -1,5 +1,8 @@
 package com.yize.miniweather.view.activity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -7,6 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +51,38 @@ public class SearchCityActivity extends AppCompatActivity {
 
     private TextView tv_current_position;
     private CityShip currentCityShip;
+    private final ActivityResultLauncher<String[]> locationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                if (hasForegroundLocationPermission()) {
+                    locateCurrentCity();
+                } else {
+                    tv_current_position.setText("未获得定位权限，点击重试，或手动搜索城市");
+                }
+            });
+
+    private boolean hasForegroundLocationPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCurrentLocation() {
+        if (hasForegroundLocationPermission()) {
+            locateCurrentCity();
+        } else {
+            // Android 12+ requires requesting fine and coarse together to allow approximate access.
+            locationPermissionLauncher.launch(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
+        }
+    }
+
+    private void locateCurrentCity() {
+        tv_current_position.setText("正在获取当前位置…");
+        TxLocationHelper.getCurrentLocation(this, txCityLocationListener);
+    }
 
     private String[]hotCitys = {"北京","上海","广州","深圳","珠海","佛山","南京","苏州","厦门","长沙","成都","福州",
             "杭州","武汉","青岛","西安","太原","沈阳","重庆","天津","南宁"};
@@ -70,10 +107,13 @@ public class SearchCityActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
         tv_current_position=findViewById(R.id.tv_current_position);
-        tv_current_position.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TxWeatherHelper.requestCity(currentCityShip,listener);
+        tv_current_position.setVisibility(View.VISIBLE);
+        tv_current_position.setText("使用当前位置（点击授权定位）");
+        tv_current_position.setOnClickListener(v -> {
+            if (currentCityShip != null) {
+                TxWeatherHelper.requestCity(currentCityShip, listener);
+            } else {
+                requestCurrentLocation();
             }
         });
 
@@ -102,7 +142,6 @@ public class SearchCityActivity extends AppCompatActivity {
             gv_host_city.setVisibility(View.VISIBLE);
             rv_search_result.setVisibility(View.GONE);
         }
-        TxLocationHelper.getCurrentLocation(SearchCityActivity.this,txCityLocationListener);
     }
 
     @Override
@@ -148,7 +187,7 @@ public class SearchCityActivity extends AppCompatActivity {
         public void onFailed(String reason) {
             gv_host_city.setVisibility(View.VISIBLE);//请求失败，还显示热门城市
             Toast.makeText(SearchCityActivity.this,reason,Toast.LENGTH_SHORT).show();
-            tv_current_position.setVisibility(View.GONE);
+            tv_current_position.setVisibility(View.VISIBLE);
         }
     };
 
@@ -191,15 +230,18 @@ public class SearchCityActivity extends AppCompatActivity {
     private TxCityLocationListener txCityLocationListener=new TxCityLocationListener() {
         @Override
         public void onSuccess(CityShip cityShip) {
-            tv_current_position.setVisibility(View.VISIBLE);
-            tv_current_position.setText("当前位置："+cityShip.getProvince()+"/"+cityShip.getCity()+"/"+cityShip.getCountry());
-            currentCityShip=cityShip;
+            runOnUiThread(() -> {
+                tv_current_position.setVisibility(View.VISIBLE);
+                tv_current_position.setText("当前位置："+cityShip.getProvince()+"/"+cityShip.getCity()+"/"+cityShip.getCountry());
+                currentCityShip=cityShip;
+            });
             Log.i("定位结果",cityShip.toString());
         }
 
         @Override
         public void onFailed(String reason) {
-            Log.i("定位","定位失败");
+            Log.i("定位", "定位失败：" + reason);
+            runOnUiThread(() -> tv_current_position.setText("定位失败，点击重试，或手动搜索城市"));
         }
     };
 

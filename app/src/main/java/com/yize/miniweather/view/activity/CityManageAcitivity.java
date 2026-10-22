@@ -88,11 +88,17 @@ public class CityManageAcitivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != 0 || resultCode != RESULT_OK || data == null) {
+            return;
+        }
         int opcode=data.getIntExtra("opcode",OPCODE_NONE);
         Log.i(TAG,String.valueOf(opcode));
         if(opcode==OPCODE_ADD){
             CityShip cityShip=(CityShip)data.getSerializableExtra("cityShip");
             WeatherBean weatherBean=(WeatherBean)data.getSerializableExtra("weatherBean");
+            if (cityShip == null || weatherBean == null || weatherBean.getData() == null) {
+                return;
+            }
             helper.open();
             CityDetailBean city=buildCityDetailBean(cityShip,weatherBean);
             Log.i(TAG,city.toString());
